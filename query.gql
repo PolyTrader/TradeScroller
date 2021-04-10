@@ -1,0 +1,16 @@
+{
+  transactions (orderBy: timestamp, orderDirection:desc, first: 5) {
+    id
+    type
+    timestamp
+    market {
+      id
+    }
+    user {
+      id
+    }
+    tradeAmount
+    outcomeIndex
+    outcomeTokensAmount
+  }
+}
