@@ -1,5 +1,5 @@
-{
-  transactions (orderBy: timestamp, orderDirection:desc, first: 5) {
+query latestTransactions ($ts: BigInt!) {
+  transactions (orderBy: timestamp, orderDirection:desc, where: {timestamp_gt: $ts}) {
     id
     type
     timestamp
