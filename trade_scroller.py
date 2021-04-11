@@ -55,14 +55,24 @@ def main():
 
     markets = markets_by_id(r.json())
     
+    try:
+        with open("watchlist.txt") as f:
+            watchlist = f.read().splitlines()
+    except:
+        watchlist = False
+
     count = 0
     timestamp = int(datetime.now().timestamp())
     while True:
         result = gql_query(timestamp)
 
-        for trx in result['transactions']:
-            mkt = markets[trx['market']['id']]
-            show_transaction(trx, mkt, count)
+        for trx in result["transactions"]:
+            mkt = markets[trx["market"]["id"]]
+            if watchlist:
+                if mkt["question"] in watchlist:
+                    show_transaction(trx, mkt, count)
+            else:
+                show_transaction(trx, mkt, count)
             count += 1
 
         try:
