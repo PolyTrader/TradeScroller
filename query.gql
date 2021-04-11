@@ -1,0 +1,16 @@
+query latestTransactions ($ts: BigInt!) {
+  transactions (orderBy: timestamp, orderDirection:desc, where: {timestamp_gt: $ts}) {
+    id
+    type
+    timestamp
+    market {
+      id
+    }
+    user {
+      id
+    }
+    tradeAmount
+    outcomeIndex
+    outcomeTokensAmount
+  }
+}
