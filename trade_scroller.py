@@ -2,7 +2,7 @@ from datetime import datetime
 from time import sleep
 
 import requests
-from gql import gql, Client
+from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
 
 
