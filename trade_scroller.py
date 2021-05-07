@@ -1,4 +1,5 @@
 import json
+import csv
 from datetime import datetime, timedelta
 from time import sleep
 
@@ -24,13 +25,22 @@ def gql_query(timestamp):
     return client.execute(query, {"ts": timestamp})
 
 
-def show_transaction(trx, mkt, count):
+def show_transaction(trx, mkt, count, aliases):
     print(f"# {count} # ****************************************")
     print(mkt['question'])
     print(f"Id: {trx['id']}")
-    print(f"User: {trx['user']['id']}")
-    
-    amount = float(trx['tradeAmount']) / 1000000
+    user_address = trx["user"]["id"]
+    if aliases:
+        username = next((i[1] for i in aliases if i[0] == user_address), None)
+    else:
+        username = None
+
+    if username:
+        print(f"User: {username}")
+    else:
+        print(f"User: {user_address}")
+
+    amount = float(trx["tradeAmount"]) / 1000000
     print(f"Amout: ${amount}")
     
     ts = int(trx['timestamp'])
@@ -61,6 +71,12 @@ def main():
     except:
         watchlist = False
 
+    try:
+        with open("aliases.csv") as f:
+            aliases = list(csv.reader(f))
+    except:
+        aliases = False
+
     count = 0
     timestamp = int(datetime.now().timestamp())
     while True:
@@ -70,9 +86,9 @@ def main():
             mkt = markets[trx["market"]["id"]]
             if watchlist:
                 if mkt["question"] in watchlist:
-                    show_transaction(trx, mkt, count)
+                    show_transaction(trx, mkt, count, aliases)
             else:
-                show_transaction(trx, mkt, count)
+                show_transaction(trx, mkt, count, aliases)
             count += 1
 
         try:
