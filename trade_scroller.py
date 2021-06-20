@@ -30,7 +30,7 @@ def show_transaction(trx, mkt, count):
     print(f"User: {trx['user']['id']}")
 
     amount = float(trx['tradeAmount']) / 1000000
-    print(f"Amout: ${amount}")
+    print(f"Amount: ${amount:.6f}")
 
     ts = int(trx['timestamp'])
     print(f"Timestamp: {datetime.utcfromtimestamp(ts)}")
@@ -41,7 +41,10 @@ def show_transaction(trx, mkt, count):
     print(f"Action: {buy_or_sell} {outcome}")
 
     num_shares = float(trx['outcomeTokensAmount']) / 1000000
-    print(f"#shares: {num_shares}")
+    print(f"#shares: {num_shares:.6f}")
+
+    average = amount / num_shares
+    print(f"Avg Cost: ${average:.6f}")
 
 
 def main():
