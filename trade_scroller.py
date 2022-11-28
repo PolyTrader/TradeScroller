@@ -9,12 +9,15 @@ from gql.transport.requests import RequestsHTTPTransport
 def markets_by_id(data):
     markets = {}
     for mkt in data:
-        markets[mkt["marketMakerAddress"].lower()] = mkt
+        try:
+            markets[mkt["marketMakerAddress"].lower()] = mkt
+        except AttributeError:
+            pass
     return markets
 
 
 def gql_query(timestamp):
-    transport = RequestsHTTPTransport("https://api.thegraph.com/subgraphs/name/tokenunion/polymarket-matic")
+    transport = RequestsHTTPTransport("https://api.thegraph.com/subgraphs/name/polymarket/matic-markets-7")
     client = Client(transport=transport, fetch_schema_from_transport=True)
 
     with open("query.gql") as fp:
